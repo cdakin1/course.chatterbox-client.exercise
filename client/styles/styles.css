@@ -88,3 +88,8 @@ form input[type=text] {
     background-color: #0090da;
 }
 
+#posts {
+  height: 400px;
+  width: 400px;
+  border: solid black 3px;
+}
