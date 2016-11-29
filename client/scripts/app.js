@@ -7,7 +7,15 @@ var app = {};
 
 var friends = [];
 
+//Username shit
+var hello = window.location.search;
+console.log(hello);
+hello = hello.slice(10);
+console.log(hello);
+/////////
+
 app.init = function () {
+
   console.log('calling init');
   $('.sendMessage').on('click', function(event) {
     console.log('clicked');
@@ -18,6 +26,7 @@ app.init = function () {
 };
 
 app.send = function (message) {
+
   console.log(message, 'message'),
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
@@ -27,7 +36,7 @@ app.send = function (message) {
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
-      $('#posts').append(message);
+      $('#posts').append(`<li>${message}</li>`);
     },
     error: function (data) {
     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
