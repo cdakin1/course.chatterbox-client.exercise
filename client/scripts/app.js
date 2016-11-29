@@ -1,15 +1,25 @@
 // YOUR CODE HERE:
+$(document).ready(function() {
+  app.init();
+});
+
 var app = {};
 
 var friends = [];
 
-
+app.init = function () {
+  console.log('calling init');
+  $('.sendMessage').on('click', function(event) {
+    console.log('clicked');
+    app.send();
+  });
+};
 
 app.send = function (message) {
   console.log('sending');
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
-    url: '',
+    url: 'https://api.parse.com/1/classes/messages',
     type: 'POST',
     data: JSON.stringify(message),
     contentType: 'application/json',
@@ -60,13 +70,3 @@ app.handleUsernameClick = function () {
 app.handleSubmit = function () {
 
 };
-
-app.init = function () {
-  console.log('calling init');
-  $('.newMessage').on('click', function() {
-    console.log('clicked');
-    app.send();
-  });
-};
-
-app.init();
