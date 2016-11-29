@@ -8,26 +8,18 @@ var app = {};
 var friends = [];
 
 //Username shit
-var hello = window.location.search;
-console.log(hello);
-hello = hello.slice(10);
-console.log(hello);
+var username = window.location.search;
+username = username.slice(10);
 /////////
 
 app.init = function () {
-
-  console.log('calling init');
   $('.sendMessage').on('click', function(event) {
-    console.log('clicked');
     let $message = $('#clickMe').val();
-    console.log($message, '$message');
     app.send($message);
   });
 };
 
 app.send = function (message) {
-
-  console.log(message, 'message'),
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
     url: 'https://api.parse.com/1/classes/messages',
@@ -36,7 +28,7 @@ app.send = function (message) {
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
-      $('#posts').append(`<li>${message}</li>`);
+      $('#posts').prepend(`<span>${username} : ${message}<br></span>`);
     },
     error: function (data) {
     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -45,16 +37,16 @@ app.send = function (message) {
   });
 };
 
-
-
 app.fetch = function (message) {
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
+    url: 'https://api.parse.com/1/classes/messages',
     type: 'GET',
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
-      console.log('chatterbox: Message sent');
+      app.clearMessages();
+      $('#posts').prepend(`<span>${data.results[0].username} : ${data.results[0].text}<br></span>`);
     },
     error: function (data) {
     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -64,7 +56,7 @@ app.fetch = function (message) {
 };
 
 app.clearMessages = function() {
-  $('#chats').html('');
+  $('#posts').html('');
 };
 
 app.renderMessage = function () {
@@ -82,3 +74,7 @@ app.handleUsernameClick = function () {
 app.handleSubmit = function () {
 
 };
+
+setInterval(function() {
+  app.fetch();
+}, 1000);
