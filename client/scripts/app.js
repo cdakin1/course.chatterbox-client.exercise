@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 var app = {};
 
-var friend = [];
+var friend = {};
 
 //Username shit
 var username = window.location.search;
@@ -17,11 +17,16 @@ app.init = function () {
     let message = {};
     message.text = $('#clickMe').val();
     message.username = window.location.search.slice(10);
+    message.roomName = 'lobby';
     app.send(message);
   });
   $('#posts').on('click', '.user', function(event) {
     console.log('you done clicked ma name');
     app.handleUsernameClick(this.innerText);
+  });
+  $('.makeRoom').on('click', function(event) {
+    let rum = $('#clickRoom').val();
+    $('.roomList').append(`<option>${rum}</option>`);
   });
 };
 
@@ -54,12 +59,16 @@ app.fetch = function (message) {
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
+      console.log(data);
       let twats = data.results;
       app.clearMessages();
       twats.forEach(function(val, i, coll) {
-        $('#posts').append(`<span class='user'>${escapeHtml(twats[i].username)}</span> <span>: ${escapeHtml(twats[i].text)}<br></span>`);
+        if (friend[twats[i].username] === twats[i].username) {
+          $('#posts').append(`<span class='friend'>${escapeHtml(twats[i].username)}</span> <span>: ${escapeHtml(twats[i].text)}<br></span>`);
+        } else {
+          $('#posts').append(`<span class='user'>${escapeHtml(twats[i].username)}</span> <span>: ${escapeHtml(twats[i].text)}<br></span>`);
+        }
       });
-      // $('#posts').prepend(`<span>${data.results[0].username} : ${data.results[0].text}<br></span>`);
     },
     error: function (data) {
     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -81,10 +90,7 @@ app.renderRoom = function () {
 };
 
 app.handleUsernameClick = function (something) {
-  if (friend.indexOf(something) === -1) {
-    friend.push(something);
-  }
-  console.log(friend);
+  friend[something] = something;
 };
 
 app.handleSubmit = function () {

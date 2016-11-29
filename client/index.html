@@ -26,12 +26,18 @@
     <div id="main">
       <h1>chatterbox</h1>
       <div id='#roomSelect'>
-
+        <form>
+          <input type='text' class='newRoom' id='clickRoom' placeholder='create a new room!'/>
+          <input type='button' value='create' class='makeRoom'/>
+          <select value='rooms' class='roomList' />
+            <option>lobby</option>
+          </select>
+        </form>
       </div>
     </div>
     <div id="chats">
       <form>
-        <input type='text' class='newMessage' id='clickMe'/>
+        <input type='text' class='newMessage' id='clickMe' placeholder='send a message!'/>
         <input type='button' value='send' class='sendMessage'/>
       </form>
       <div id='posts'>
