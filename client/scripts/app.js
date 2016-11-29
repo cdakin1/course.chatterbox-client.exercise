@@ -11,12 +11,14 @@ app.init = function () {
   console.log('calling init');
   $('.sendMessage').on('click', function(event) {
     console.log('clicked');
-    app.send();
+    let $message = $('#clickMe').val();
+    console.log($message, '$message');
+    app.send($message);
   });
 };
 
 app.send = function (message) {
-  console.log('sending');
+  console.log(message, 'message'),
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
     url: 'https://api.parse.com/1/classes/messages',
@@ -25,6 +27,7 @@ app.send = function (message) {
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
+      $('#posts').append(message);
     },
     error: function (data) {
     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
