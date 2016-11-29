@@ -89,7 +89,7 @@ form input[type=text] {
 }
 
 #posts {
-  height: 400px;
+  height: auto;
   width: 400px;
   border: solid black 3px;
 }
