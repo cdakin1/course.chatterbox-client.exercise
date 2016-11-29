@@ -16,10 +16,8 @@ username = username.slice(10);
 
 
 //Username shit
-var hello = window.location.search;
-console.log(hello);
-hello = hello.slice(10);
-console.log(hello);
+var username = window.location.search;
+username = username.slice(10);
 /////////
 
 app.init = function () {
