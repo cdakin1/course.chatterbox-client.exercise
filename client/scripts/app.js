@@ -73,6 +73,7 @@ app.fetch = function (message) {
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
+      console.log(data);
       let twats = data.results;
       let dropdown = $('.roomList').find(':selected').text();
       app.clearMessages();
