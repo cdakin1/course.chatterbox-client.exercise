@@ -27,7 +27,8 @@ app.init = function () {
   $('.username').on('click', function() {
     app.handleUsernameClick();
   });
-  $('#send').on('click', function() {
+  $('#send .submit').on('click', function() {
+    console.log('help!');
     app.handleSubmit();
   });
   $('#chats').on('click', '.user', function(event) {
@@ -49,9 +50,7 @@ app.send = function (message) {
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
-      console.log('chatterbox: Message sent');
-      app.clearMessages();
-      app.fetch();
+
       // $('#posts').prepend(`<span>${username} : ${message}<br></span>`);
     },
     error: function (data) {
