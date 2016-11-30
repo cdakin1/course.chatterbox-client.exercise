@@ -5,6 +5,7 @@ $(document).ready(function() {
 
 var app = {};
 
+app.server = 'https://api.parse.com/1/classes/messages';
 var friend = {};
 
 //Username shit
@@ -12,15 +13,24 @@ var username = window.location.search;
 username = username.slice(10);
 /////////
 
+
+
 app.init = function () {
+  let dropdown = $('.roomList').find(':selected').text();
   $('.sendMessage').on('click', function(event) {
     let message = {};
     message.text = $('#clickMe').val();
     message.username = window.location.search.slice(10);
-    message.roomName = 'lobby';
+    message.roomName = $('.roomList').find(':selected').text();
     app.send(message);
   });
-  $('#posts').on('click', '.user', function(event) {
+  $('.username').on('click', function() {
+    app.handleUsernameClick();
+  });
+  $('#send').on('click', function() {
+    app.handleSubmit();
+  });
+  $('#chats').on('click', '.user', function(event) {
     console.log('you done clicked ma name');
     app.handleUsernameClick(this.innerText);
   });
@@ -59,15 +69,21 @@ app.fetch = function (message) {
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
-      console.log(data);
       let twats = data.results;
+      let dropdown = $('.roomList').find(':selected').text();
       app.clearMessages();
       twats.forEach(function(val, i, coll) {
-        if (friend[twats[i].username] === twats[i].username) {
-          $('#posts').append(`<span class='friend'>${escapeHtml(twats[i].username)}</span> <span>: ${escapeHtml(twats[i].text)}<br></span>`);
-        } else {
-          $('#posts').append(`<span class='user'>${escapeHtml(twats[i].username)}</span> <span>: ${escapeHtml(twats[i].text)}<br></span>`);
+        if (twats[i].roomName === dropdown) {
+          if (friend[twats[i].username] === twats[i].username) {
+            $('#chats').append(`<span class='friend'>${escapeHtml(twats[i].username)}</span> <span>: ${escapeHtml(twats[i].text)}<br></span>`);
+          } else {
+            $('#chats').append(`<span class='user'>${escapeHtml(twats[i].username)}</span> <span>: ${escapeHtml(twats[i].text)}<br></span>`);
+          }
         }
+      });
+
+      $(dropdown).on('click', function() {
+
       });
     },
     error: function (data) {
@@ -79,6 +95,7 @@ app.fetch = function (message) {
 
 app.clearMessages = function() {
   $('#posts').html('');
+  $('#chats').html('');
 };
 
 app.renderMessage = function () {
@@ -93,8 +110,8 @@ app.handleUsernameClick = function (something) {
   friend[something] = something;
 };
 
-app.handleSubmit = function () {
-
+app.handleSubmit = function (message) {
+  app.send(message);
 };
 
 var escapeHtml = function (str) {
