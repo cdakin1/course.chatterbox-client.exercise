@@ -14,12 +14,6 @@ username = username.slice(10);
 /////////
 
 
-
-//Username shit
-var username = window.location.search;
-username = username.slice(10);
-/////////
-
 app.init = function () {
   let dropdown = $('.roomList').find(':selected').text();
   $('.sendMessage').on('click', function(event) {
